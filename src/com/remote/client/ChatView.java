@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -142,7 +143,7 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listConnect = new javax.swing.JList<>();
+        listConnect = new javax.swing.JList<String>();
         jScrollPane2 = new javax.swing.JScrollPane();
         inputMsg = new javax.swing.JTextArea();
         btnSend = new javax.swing.JButton();
@@ -185,12 +186,17 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
 
         listConnect.setBackground(new java.awt.Color(204, 204, 204));
         listConnect.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        listConnect.setModel(new javax.swing.AbstractListModel<String>() {
+        listConnect.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public Object getElementAt(int i) { return strings[i]; }
         });
         listConnect.setToolTipText("");
+        listConnect.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listConnectMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listConnect);
 
         inputMsg.setColumns(20);
@@ -345,8 +351,21 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         if(!inputMsg.getText().equals("")){
             if(!inputMsg.getText().equals("Digite a mensagem...")){
-                client.sendMessage(listConnect.getSelectedValuesList());
-                inputMsg.setText("");
+                if(inputMsg.getText().startsWith("@")){
+                    //String conteudo = inputMsg.getText();
+                    String[]separador = inputMsg.getText().split(" ");
+                    String user = separador[0];
+                    //conteudo = conteudo.replaceAll(user, "");
+                    user = user.replaceAll("@", "");
+                    //System.out.println("user:" + user + ", conteudo:" + conteudo);
+                    List<String> privado = new ArrayList<String>();
+                    privado.add(user);
+                    client.sendMessage(privado);
+                    inputMsg.setText("");
+                }else{
+                    client.sendMessage(listConnect.getSelectedValuesList());
+                    inputMsg.setText("");
+                }
             }else{
             JOptionPane.showMessageDialog(this,"Por favor, insira algo para enviar a mensagem","Alert",JOptionPane.WARNING_MESSAGE);
         }
@@ -459,6 +478,13 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
         jButton1.setForeground(new java.awt.Color(255,193,7));
         jButton1.setBackground(new java.awt.Color(52, 58, 64));
     }//GEN-LAST:event_jButton1MouseExited
+
+    private void listConnectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listConnectMouseClicked
+        if (evt.getClickCount() == 2) {
+            inputMsg.setText("");
+            inputMsg.setText("@" + listConnect.getSelectedValue().toString() + " ");
+        }
+    }//GEN-LAST:event_listConnectMouseClicked
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;

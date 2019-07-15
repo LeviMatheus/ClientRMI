@@ -101,7 +101,17 @@ public class ChatClient extends UnicastRemoteObject implements InterfaceClient{
     @Override
     public void sendMessage(List<String> list) {
         try {
-            server.broadcastMessage(name + " : " + input.getText(),list);
+            if(input.getText().startsWith("@")){
+                //mensagem privada
+                String conteudo = input.getText();
+                String[]separador = input.getText().split(" ");
+                String user = separador[0];
+                conteudo = conteudo.replaceAll(user, "");
+                user = user.replaceAll("@", "");
+                server.broadcastMessage(name + " : " + conteudo + " (mensagem privada)",list); 
+            }else{
+                server.broadcastMessage(name + " : " + input.getText(),list); 
+            }
         } catch (RemoteException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
