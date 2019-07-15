@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -103,12 +104,18 @@ public class ChatClient extends UnicastRemoteObject implements InterfaceClient{
         try {
             if(input.getText().startsWith("@")){
                 //mensagem privada
+                int i = 0;
                 String conteudo = input.getText();
                 String[]separador = input.getText().split(" ");
-                String user = separador[0];
-                conteudo = conteudo.replaceAll(user, "");
-                user = user.replaceAll("@", "");
+                while(separador[i].startsWith("@")){
+                    i++;
+                }
+                if(i==1){
+                   String user = separador[0];
+                   conteudo = conteudo.replace(user, ""); 
+                }
                 server.broadcastMessage("(Privado) " + name + " : " + conteudo ,list); 
+                
             }else{
                 server.broadcastMessage(name + " : " + input.getText(),list); 
             }

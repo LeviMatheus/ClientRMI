@@ -352,17 +352,20 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
         if(!inputMsg.getText().equals("")){
             if(!inputMsg.getText().equals("Digite a mensagem...")){
                 if(inputMsg.getText().startsWith("@")){
-                    //String conteudo = inputMsg.getText();
-                    String[]separador = inputMsg.getText().split(" ");
-                    String user = separador[0];
-                    //conteudo = conteudo.replaceAll(user, "");
-                    user = user.replaceAll("@", "");
-                    //System.out.println("user:" + user + ", conteudo:" + conteudo);
+                    String[]conteudo = inputMsg.getText().split(" ");
+                    int i = 0;
                     List<String> privado = new ArrayList<String>();
-                    privado.add(user);
+                    while(conteudo[i].startsWith("@")){
+                        String usuario = conteudo[i].replace("@", "");
+                        System.out.println("Usuario: " + usuario);
+                        privado.add(usuario);
+                        i++;
+                    }
                     privado.add(name);
                     client.sendMessage(privado);
                     inputMsg.setText("");
+                    Thread t = new Thread(this);
+                    t.start();
                 }else{
                     client.sendMessage(listConnect.getSelectedValuesList());
                     inputMsg.setText("");
