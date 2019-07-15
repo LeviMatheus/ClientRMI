@@ -161,18 +161,31 @@ public class LoginView extends javax.swing.JFrame {
 
     //a ação quando um cliente vai entrar no chat, em primeiro lugar verificar se o nome de usuário já existe
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        String tipo = (String) jComboBox1.getSelectedItem();
         if (txtUser.getText().isEmpty() || txtPassword.getPassword().length == 0 || txtUser.getText().contains(" ")) {
             UIManager UI = new UIManager();
             UI.put("OptionPane.background", new ColorUIResource(52, 58, 64));
             UI.put("Panel.background", new ColorUIResource(52, 58, 64));
             JOptionPane.showMessageDialog(this, "Por favor, preencha os campos de usuário e senha.", "Alert", JOptionPane.WARNING_MESSAGE);
+            
         } else {
             try {
-                if (server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()), false)) {
-                    new ChatView(txtUser.getText(), (String) jComboBox1.getSelectedItem(), server).setVisible(true);
-                    this.dispose();
+                if (txtUser.getText().equals("renan")) {
+                    if (server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()), false)) {
+                        new ChatView(txtUser.getText(), tipo, server).setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(new JFrame(), "Nome de Usuário ou senha incorretos", "Alert", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else if (tipo.equals("Administrator")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Você não tem os privilégios selecionados", "Alert", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "Nome de Usuário ou senha incorretos", "Alert", JOptionPane.WARNING_MESSAGE);
+                    if (server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()), false)) {
+                        new ChatView(txtUser.getText(), "Simple User", server).setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(new JFrame(), "Nome de Usuário ou senha incorretos", "Alert", JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Error!! A remoteException occurred in the server. \n\nTry to: \n- Restart the server \n- Change the port", "Alert", JOptionPane.WARNING_MESSAGE);
