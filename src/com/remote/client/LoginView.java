@@ -21,7 +21,6 @@ public class LoginView extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(new java.awt.Color(52, 58, 64));
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("login.png")));
-
         try {
             server = (InterfaceServer) Naming.lookup("rmi://localhost:4321/remote");
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
@@ -173,7 +172,7 @@ public class LoginView extends javax.swing.JFrame {
                     new ChatView(txtUser.getText(), (String) jComboBox1.getSelectedItem(), server).setVisible(true);
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "nome de usuário já está sendo utilizado", "Alert", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "Nome de usuário já está sendo utilizado", "Alert", JOptionPane.WARNING_MESSAGE);
                 }
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Error!! a remoteException occurred in the server. \n\ntry to: \n- Restart the server \n- Change the port", "Alert", JOptionPane.WARNING_MESSAGE);
@@ -187,7 +186,9 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserActionPerformed
 
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
-        // TODO add your handling code here:
+        InterfaceRegister ir = new InterfaceRegister();
+        ir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnSignUpActionPerformed
 
     private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered

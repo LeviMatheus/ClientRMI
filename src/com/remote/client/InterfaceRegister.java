@@ -1,16 +1,37 @@
 package com.remote.client;
 
+import com.remote.server.InterfaceServer;
+import java.awt.Toolkit;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
+
 /**
  *
  * @author renan
  */
 public class InterfaceRegister extends javax.swing.JFrame {
 
+    private InterfaceServer server;
+    
     /**
      * Creates new form InterfaceRegister
      */
     public InterfaceRegister() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new java.awt.Color(52, 58, 64));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("login.png")));
+        try {
+            server = (InterfaceServer) Naming.lookup("rmi://localhost:4321/remote");
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
     }
 
     /**
@@ -24,27 +45,62 @@ public class InterfaceRegister extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtUser = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
+        txtPassword = new javax.swing.JPasswordField();
+        txtPasswordconfirm = new javax.swing.JPasswordField();
+        btnReturn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Nome do Usuário:");
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Senha:");
 
-        jTextField1.setText("jTextField1");
+        jLabel3.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Confirmar Senha:");
 
-        jTextField2.setText("jTextField2");
+        btnRegister.setBackground(new java.awt.Color(52, 58, 64));
+        btnRegister.setFont(new java.awt.Font("Noto Sans", 1, 16)); // NOI18N
+        btnRegister.setForeground(new java.awt.Color(40, 167, 69));
+        btnRegister.setText("Registrar-se");
+        btnRegister.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRegisterMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRegisterMouseEntered(evt);
+            }
+        });
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
 
-        jTextField3.setText("jTextField3");
-
-        jLabel3.setText("jLabel3");
-
-        jButton1.setText("jButton1");
+        btnReturn.setBackground(new java.awt.Color(52, 58, 64));
+        btnReturn.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
+        btnReturn.setForeground(new java.awt.Color(220, 53, 69));
+        btnReturn.setText("Voltar");
+        btnReturn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnReturnMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnReturnMouseEntered(evt);
+            }
+        });
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,18 +111,19 @@ public class InterfaceRegister extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel1)
+                    .addComponent(btnReturn))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addComponent(jTextField3)))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(jButton1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPasswordconfirm))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRegister, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(txtUser)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,22 +131,73 @@ public class InterfaceRegister extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(txtPasswordconfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(29, 29, 29)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnRegister, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                    .addComponent(btnReturn))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnReturnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnMouseEntered
+        btnReturn.setForeground(new java.awt.Color(52, 58, 64));
+        btnReturn.setBackground(new java.awt.Color(220,53,69));
+    }//GEN-LAST:event_btnReturnMouseEntered
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        LoginView tc = new LoginView();
+        tc.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnReturnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnMouseExited
+        btnReturn.setForeground(new java.awt.Color(220,53,69));
+        btnReturn.setBackground(new java.awt.Color(52, 58, 64));
+    }//GEN-LAST:event_btnReturnMouseExited
+
+    private void btnRegisterMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegisterMouseEntered
+        btnRegister.setForeground(new java.awt.Color(52, 58, 64));
+        btnRegister.setBackground(new java.awt.Color(40,167,69));
+    }//GEN-LAST:event_btnRegisterMouseEntered
+
+    private void btnRegisterMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegisterMouseExited
+        btnRegister.setForeground(new java.awt.Color(40,167,69));
+        btnRegister.setBackground(new java.awt.Color(52, 58, 64));
+    }//GEN-LAST:event_btnRegisterMouseExited
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        String pass = String.valueOf(txtPassword.getPassword());
+        String passConfirm = String.valueOf(txtPasswordconfirm.getPassword());
+        if (txtUser.getText().isEmpty() || txtPassword.getPassword().length == 0 || txtUser.getText().contains(" ") || !pass.equals(passConfirm)) {
+            UIManager UI = new UIManager();
+            UI.put("OptionPane.background", new ColorUIResource(52, 58, 64));
+            UI.put("Panel.background", new ColorUIResource(52, 58, 64));
+            JOptionPane.showMessageDialog(this, "Por favor, preencha os campos de usuário e senha.", "Alert", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                if (!server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()))) {
+                    new ChatView(txtUser.getText(), "Simple User", server).setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(), "Nome de usuário já está sendo utilizado", "Alert", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (RemoteException ex) {
+                JOptionPane.showMessageDialog(this, "Error!! a remoteException occurred in the server. \n\ntry to: \n- Restart the server \n- Change the port", "Alert", JOptionPane.WARNING_MESSAGE);
+                System.out.println("Error: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,12 +235,13 @@ public class InterfaceRegister extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnRegister;
+    private javax.swing.JButton btnReturn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JPasswordField txtPasswordconfirm;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }
