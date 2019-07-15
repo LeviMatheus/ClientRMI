@@ -360,6 +360,7 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
                     //System.out.println("user:" + user + ", conteudo:" + conteudo);
                     List<String> privado = new ArrayList<String>();
                     privado.add(user);
+                    privado.add(name);
                     client.sendMessage(privado);
                     inputMsg.setText("");
                 }else{
@@ -440,7 +441,17 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
                         }
                         in.close();
                     }
-                    server.broadcastMessage(inc, listClients,file.getName());
+                    if(inputMsg.getText().startsWith("@")){
+                        String[]separador = inputMsg.getText().split(" ");
+                        String user = separador[0];
+                        user = user.replaceAll("@", "");
+                        List<String> privado = new ArrayList<String>();
+                        privado.add(user);
+                        privado.add(name);
+                        server.broadcastMessage(inc, privado,file.getName());
+                    }else{
+                        server.broadcastMessage(inc, listClients,file.getName());
+                    }
                 } catch (FileNotFoundException ex) {
                     System.out.println("Error: " + ex.getMessage());
                 } catch (RemoteException ex) {

@@ -108,7 +108,7 @@ public class ChatClient extends UnicastRemoteObject implements InterfaceClient{
                 String user = separador[0];
                 conteudo = conteudo.replaceAll(user, "");
                 user = user.replaceAll("@", "");
-                server.broadcastMessage(name + " : " + conteudo + " (mensagem privada)",list); 
+                server.broadcastMessage("(Privado) " + name + " : " + conteudo ,list); 
             }else{
                 server.broadcastMessage(name + " : " + input.getText(),list); 
             }
