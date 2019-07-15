@@ -20,7 +20,7 @@ public class LoginView extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(new java.awt.Color(52, 58, 64));
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("login.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/com/remote/client/login.png")));
         try {
             server = (InterfaceServer) Naming.lookup("rmi://localhost:4321/remote");
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
@@ -168,14 +168,14 @@ public class LoginView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, preencha os campos de usuário e senha.", "Alert", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                if (server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()))) {
+                if (server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()), false)) {
                     new ChatView(txtUser.getText(), (String) jComboBox1.getSelectedItem(), server).setVisible(true);
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "Nome de usuário já está sendo utilizado", "Alert", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "Nome de Usuário ou senha incorretos", "Alert", JOptionPane.WARNING_MESSAGE);
                 }
             } catch (RemoteException ex) {
-                JOptionPane.showMessageDialog(this, "Error!! a remoteException occurred in the server. \n\ntry to: \n- Restart the server \n- Change the port", "Alert", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error!! A remoteException occurred in the server. \n\nTry to: \n- Restart the server \n- Change the port", "Alert", JOptionPane.WARNING_MESSAGE);
                 System.out.println("Error: " + ex.getMessage());
             }
         }

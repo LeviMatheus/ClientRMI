@@ -26,7 +26,7 @@ public class InterfaceRegister extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(new java.awt.Color(52, 58, 64));
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("login.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/com/remote/client/login.png")));
         try {
             server = (InterfaceServer) Naming.lookup("rmi://localhost:4321/remote");
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
@@ -186,7 +186,7 @@ public class InterfaceRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, preencha os campos de usuário e senha.", "Alert", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                if (!server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()))) {
+                if (server.checkUser(txtUser.getText(), String.valueOf(txtPassword.getPassword()), true)) {
                     new ChatView(txtUser.getText(), "Simple User", server).setVisible(true);
                     this.dispose();
                 } else {

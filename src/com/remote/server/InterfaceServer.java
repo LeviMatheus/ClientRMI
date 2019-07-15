@@ -34,5 +34,5 @@ public interface InterfaceServer extends Remote{
     void reactiveClient(List<String> clients) throws RemoteException;
     
     //cette fonction pour verfifier est que un username existe deja dans le serveur ou non, car username est l'identificateur sur chat
-    boolean checkUser(String username, String password) throws RemoteException;
+    boolean checkUser(String username, String password, Boolean newUser) throws RemoteException;
 }

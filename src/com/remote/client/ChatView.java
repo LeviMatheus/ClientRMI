@@ -49,7 +49,7 @@ public class ChatView extends javax.swing.JFrame implements Runnable{
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(new java.awt.Color(52, 58, 64));
         this.setTitle("Chat (" + name + ")");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("chat.jpg")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/com/remote/client/chat.jpg")));
         
         groupLayout = new GroupLayout(jPanel1);
         jPanel1.setLayout(new GridLayout(100,1));
